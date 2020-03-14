@@ -1,6 +1,8 @@
 package com.example.cryptobag;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -9,95 +11,128 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class DetailActivity extends AppCompatActivity {
 
-private TextView shortName, longName, textViewVal, textViewChange1, textViewChange24, textViewChange7, textViewMark, textViewVol;
+//    private TextView shortName, longName, textViewVal, textViewChange1, textViewChange24, textViewChange7, textViewMark, textViewVol;
+//    private static final String TAG = "Detail";
+//    private ImageView imageView;
+//    private String coinSelected;
+//    private Intent intent;
+//    private FragmentManager fragmentManager;
 
-private static final String TAG = "Detail";
-
-private ImageView myImage;
-
-private String searchCoin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra("Message");
-        Coin c = Coin.searchCoin(message);
+        if (savedInstanceState == null) {
+            Bundle arguments = new Bundle();
+            arguments.putString(DetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(DetailFragment.ARG_ITEM_ID));
 
-        searchCoin = c.getName();
-
-        longName = findViewById(R.id.longName);
-        longName.setText(c.getName());
-
-        shortName = findViewById(R.id.shortName);
-        shortName.setText(c.getSymbol());
-
-
-        String change1 = Double.toString(c.getChange1h());
-
-        textViewChange1 = findViewById(R.id.textViewChange1);
-        textViewChange1.setText(change1 + " %");
-
-        String change24 = Double.toString(c.getChange24h());
-
-        textViewChange24 = findViewById(R.id.textViewChange24);
-        textViewChange24.setText(change24 + " %");
-
-        String change7 = Double.toString(c.getChange7d());
-
-        textViewChange7 = findViewById(R.id.textViewChange7);
-        textViewChange7.setText(change7 + " %");
-
-        String value = Double.toString(c.getValue());
-
-        textViewVal = findViewById(R.id.textViewValue);
-        textViewVal.setText("$" + value);
-
-        textViewMark = findViewById(R.id.textViewMark);
-        textViewMark.setText("$" + String.format("%.2f", c.getMarketcap()));
-
-        textViewVol = findViewById(R.id.textViewVol);
-        textViewVol.setText("$" + String.format("%.2f", c.getVolume()));
-
-        myImage = findViewById(R.id.myImage);
-
-        if (searchCoin.equals("BinanceCoin")){
-            myImage.setImageResource(R.drawable.binancecoin);
-        } else if (searchCoin.equals("Bitcoin")){
-            myImage.setImageResource(R.drawable.bitcoin);
-        } else if (searchCoin.equals("Bitcoin Cash")) {
-            myImage.setImageResource(R.drawable.bitcoincash);
-        } else if (searchCoin.equals("Bitcoin SV")){
-            myImage.setImageResource(R.drawable.bitcoinsv);
-        } else if (searchCoin.equals("EOS")){
-            myImage.setImageResource(R.drawable.eos);
-        } else if (searchCoin.equals("Ethereum")){
-            myImage.setImageResource(R.drawable.ethereum);
-        } else if (searchCoin.equals("Litecoin")){
-            myImage.setImageResource(R.drawable.lifecoin);
-        } else if (searchCoin.equals("Stellar")){
-            myImage.setImageResource(R.drawable.stellar);
-        } else if (searchCoin.equals("Tether")){
-            myImage.setImageResource(R.drawable.tether);
-        } else if (searchCoin.equals("XRP")){
-            myImage.setImageResource(R.drawable.xrp);
-        } else {
-
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.detailContainer, fragment)
+                    .commit();
         }
 
+
+//        fragmentManager = getSupportFragmentManager();
+//        Fragment fragment = fragmentManager.findFragmentById(R.id.container);
+//        if (savedInstanceState == null) {
+//            fragmentManager.beginTransaction()
+//                    .add(R.id.container, new CoinListFragment())
+//                    .commit();
+//        }
+//
+//
+//        intent = getIntent();
+//        String message = intent.getStringExtra("Message");
+//        Coin c = Coin.searchCoin(message);
+//        DecimalFormat formatter = new DecimalFormat("#,###.00");
+//
+//        coinSelected = c.getName();
+//        longName = findViewById(R.id.longName);
+//        longName.setText(c.getName());
+//        shortName = findViewById(R.id.shortName);
+//        shortName.setText(c.getSymbol());
+//
+//        String change1 = Double.toString(c.getChange1h());
+//
+//        textViewChange1 = findViewById(R.id.textViewChange1);
+//        textViewChange1.setText(change1 + " %");
+//
+//        String change24 = Double.toString(c.getChange24h());
+//
+//        textViewChange24 = findViewById(R.id.textViewChange24);
+//        textViewChange24.setText(change24 + " %");
+//
+//        String change7 = Double.toString(c.getChange7d());
+//
+//        textViewChange7 = findViewById(R.id.textViewChange7);
+//        textViewChange7.setText(change7 + " %");
+//
+//        textViewVal = findViewById(R.id.textViewValue);
+//        textViewVal.setText("$" + String.valueOf(formatter.format(c.getValue())));
+//
+//        textViewMark = findViewById(R.id.textViewMark);
+//        textViewMark.setText("$" + String.valueOf(formatter.format(c.getMarketcap())));
+//
+//        textViewVol = findViewById(R.id.textViewVol);
+//        textViewVol.setText("$" + formatter.format(c.getVolume()));
+//
+//        imageView = findViewById(R.id.myImage);
+//
+//        setImage(coinSelected);
+
+
     }
 
 
-
-    public void googleCoin(View view) {
-        Intent implicit = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + searchCoin));
-        startActivity(implicit);
-    }
-
+//    public void setImage(String coinSelected) {
+//        System.out.println(coinSelected);
+//        if (coinSelected != null) {
+//            if (coinSelected.equals("BinanceCoin")) {
+//                imageView.setImageResource(R.drawable.binancecoin);
+//            } else if (coinSelected.equals("Bitcoin")) {
+//                imageView.setImageResource(R.drawable.bitcoin);
+//            } else if (coinSelected.equals("Bitcoin Cash")) {
+//                imageView.setImageResource(R.drawable.bitcoincash);
+//            } else if (coinSelected.equals("Bitcoin SV")) {
+//                imageView.setImageResource(R.drawable.bitcoinsv);
+//            } else if (coinSelected.equals("EOS")) {
+//                imageView.setImageResource(R.drawable.eos);
+//            } else if (coinSelected.equals("Ethereum")) {
+//                imageView.setImageResource(R.drawable.ethereum);
+//            } else if (coinSelected.equals("Litecoin")) {
+//                imageView.setImageResource(R.drawable.lifecoin);
+//            } else if (coinSelected.equals("Stellar")) {
+//                imageView.setImageResource(R.drawable.stellar);
+//            } else if (coinSelected.equals("Tether")) {
+//                imageView.setImageResource(R.drawable.tether);
+//            } else if (coinSelected.equals("XRP")) {
+//                imageView.setImageResource(R.drawable.xrp);
+//            } else {
+//
+//            }
+//        } else {
+//            //ask akhil why i need this unless it loads blank activity when back button is pressed
+//            Intent intent2 = new Intent(this, MainActivity.class);
+//            startActivity(intent2);
+//
+//        }
+//    }
+//
+//
+//    public void googleCoin(View view) {
+//        Intent implicit = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + coinSelected));
+//        startActivity(implicit);
+//    }
 
 
 }
