@@ -1,28 +1,10 @@
 package com.example.cryptobag;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
-
-//    private TextView shortName, longName, textViewVal, textViewChange1, textViewChange24, textViewChange7, textViewMark, textViewVol;
-//    private static final String TAG = "Detail";
-//    private ImageView imageView;
-//    private String coinSelected;
-//    private Intent intent;
-//    private FragmentManager fragmentManager;
 
 
     @Override

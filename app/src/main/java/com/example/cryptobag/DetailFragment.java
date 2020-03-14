@@ -16,7 +16,6 @@ import java.text.DecimalFormat;
 
 
 public class DetailFragment extends Fragment {
-    //    private Intent intent;
     private TextView shortName, longName, textViewVal, textViewChange1, textViewChange24, textViewChange7, textViewMark, textViewVol;
     private ImageView imageView;
     private String coinSelected;
@@ -25,7 +24,6 @@ public class DetailFragment extends Fragment {
 
 
     public DetailFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -84,62 +82,8 @@ public class DetailFragment extends Fragment {
         }
 
         return rootView;
-
-
     }
 
-
-//    private void updateUi() {
-//        View rootView = getView();
-//        Intent intent = getActivity().getIntent();
-//        if(coin != null) {
-//            String message = intent.getStringExtra("Message");
-//            System.out.println(message + "updateUi");
-//            Coin c = Coin.searchCoin(message);
-//            DecimalFormat formatter = new DecimalFormat("#,###.00");
-//
-//            coinSelected = c.getName();
-//            longName = rootView.findViewById(R.id.longName);
-//            longName.setText(c.getName());
-//            shortName = rootView.findViewById(R.id.shortName);
-//            shortName.setText(c.getSymbol());
-//
-//            String change1 = Double.toString(c.getChange1h());
-//
-//            textViewChange1 = rootView.findViewById(R.id.textViewChange1);
-//            textViewChange1.setText(change1 + " %");
-//
-//            String change24 = Double.toString(c.getChange24h());
-//            textViewChange24 = rootView.findViewById(R.id.textViewChange24);
-//            textViewChange24.setText(change24 + " %");
-//
-//            String change7 = Double.toString(c.getChange7d());
-//
-//            textViewChange7 = rootView.findViewById(R.id.textViewChange7);
-//            textViewChange7.setText(change7 + " %");
-//
-//            textViewVal = rootView.findViewById(R.id.textViewValue);
-//            textViewVal.setText("$" + String.valueOf(formatter.format(c.getValue())));
-//
-//            textViewMark = rootView.findViewById(R.id.textViewMark);
-//            textViewMark.setText("$" + String.valueOf(formatter.format(c.getMarketcap())));
-//
-//            textViewVol = rootView.findViewById(R.id.textViewVol);
-//            textViewVol.setText("$" + formatter.format(c.getVolume()));
-//
-//            imageView = rootView.findViewById(R.id.myImage);
-//
-//            setImage(coinSelected);
-//
-//            rootView.findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    googleCoin(coin.getName());
-//                }
-//            });
-//
-//        }
-//    }
 
     public void googleCoin(String name) {
         Intent implicit = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + name));
@@ -149,7 +93,7 @@ public class DetailFragment extends Fragment {
     public void setImage(String coinSelected) {
         System.out.println(coinSelected);
         if (coinSelected != null) {
-            if (coinSelected.equals("BinanceCoin")) {
+            if (coinSelected.equals("Binance Coin")) {
                 imageView.setImageResource(R.drawable.binancecoin);
             } else if (coinSelected.equals("Bitcoin")) {
                 imageView.setImageResource(R.drawable.bitcoin);
