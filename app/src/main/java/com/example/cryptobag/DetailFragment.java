@@ -41,7 +41,7 @@ public class DetailFragment extends Fragment {
         if (coin != null) {
             DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-            coinSelected = coin.getName();
+            coinSelected = coin.getSymbol();
             longName = rootView.findViewById(R.id.longName);
             longName.setText(coin.getName());
             shortName = rootView.findViewById(R.id.shortName);
@@ -93,29 +93,9 @@ public class DetailFragment extends Fragment {
     public void setImage(String coinSelected) {
         System.out.println(coinSelected);
         if (coinSelected != null) {
-            if (coinSelected.equals("Binance Coin")) {
-                imageView.setImageResource(R.drawable.binancecoin);
-            } else if (coinSelected.equals("Bitcoin")) {
-                imageView.setImageResource(R.drawable.bitcoin);
-            } else if (coinSelected.equals("Bitcoin Cash")) {
-                imageView.setImageResource(R.drawable.bitcoincash);
-            } else if (coinSelected.equals("Bitcoin SV")) {
-                imageView.setImageResource(R.drawable.bitcoinsv);
-            } else if (coinSelected.equals("EOS")) {
-                imageView.setImageResource(R.drawable.eos);
-            } else if (coinSelected.equals("Ethereum")) {
-                imageView.setImageResource(R.drawable.ethereum);
-            } else if (coinSelected.equals("Litecoin")) {
-                imageView.setImageResource(R.drawable.lifecoin);
-            } else if (coinSelected.equals("Stellar")) {
-                imageView.setImageResource(R.drawable.stellar);
-            } else if (coinSelected.equals("Tether")) {
-                imageView.setImageResource(R.drawable.tether);
-            } else if (coinSelected.equals("XRP")) {
-                imageView.setImageResource(R.drawable.xrp);
-            } else {
+            int res = getResources().getIdentifier(coinSelected.toLowerCase(), "drawable", "com.example.cryptobag");
+            imageView.setImageResource(res);
 
-            }
         } else {
             Intent intent2 = new Intent(getActivity(), MainActivity.class);
             startActivity(intent2);

@@ -80,23 +80,23 @@ public class DetailActivity extends AppCompatActivity {
 //        System.out.println(coinSelected);
 //        if (coinSelected != null) {
 //            if (coinSelected.equals("BinanceCoin")) {
-//                imageView.setImageResource(R.drawable.binancecoin);
+//                imageView.setImageResource(R.drawable.bnb);
 //            } else if (coinSelected.equals("Bitcoin")) {
-//                imageView.setImageResource(R.drawable.bitcoin);
+//                imageView.setImageResource(R.drawable.btc);
 //            } else if (coinSelected.equals("Bitcoin Cash")) {
-//                imageView.setImageResource(R.drawable.bitcoincash);
+//                imageView.setImageResource(R.drawable.bch);
 //            } else if (coinSelected.equals("Bitcoin SV")) {
-//                imageView.setImageResource(R.drawable.bitcoinsv);
+//                imageView.setImageResource(R.drawable.bchsv);
 //            } else if (coinSelected.equals("EOS")) {
 //                imageView.setImageResource(R.drawable.eos);
 //            } else if (coinSelected.equals("Ethereum")) {
-//                imageView.setImageResource(R.drawable.ethereum);
+//                imageView.setImageResource(R.drawable.eth);
 //            } else if (coinSelected.equals("Litecoin")) {
-//                imageView.setImageResource(R.drawable.lifecoin);
+//                imageView.setImageResource(R.drawable.ltc);
 //            } else if (coinSelected.equals("Stellar")) {
-//                imageView.setImageResource(R.drawable.stellar);
+//                imageView.setImageResource(R.drawable.xlm);
 //            } else if (coinSelected.equals("Tether")) {
-//                imageView.setImageResource(R.drawable.tether);
+//                imageView.setImageResource(R.drawable.usdt);
 //            } else if (coinSelected.equals("XRP")) {
 //                imageView.setImageResource(R.drawable.xrp);
 //            } else {

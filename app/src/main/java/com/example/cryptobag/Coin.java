@@ -113,16 +113,16 @@ public class Coin {
 
     public static ArrayList<Coin> getCoins() {
         ArrayList<Coin> coins = new ArrayList<>();
-        coins.add(new Coin("Bitcoin", "BTC", 8662.99, -5.30, 0.06, 6.25, 157394075212.34, 26248451879.217194, R.drawable.bitcoin));
-        coins.add(new Coin("Ethereum", "ETH", 165.69, -5.94, 0.00, 14.58, 18116094926.74, 11453091518.956093, R.drawable.ethereum));
+        coins.add(new Coin("Bitcoin", "BTC", 8662.99, -5.30, 0.06, 6.25, 157394075212.34, 26248451879.217194, R.drawable.btc));
+        coins.add(new Coin("Ethereum", "ETH", 165.69, -5.94, 0.00, 14.58, 18116094926.74, 11453091518.956093, R.drawable.eth));
         coins.add(new Coin("XRP", "XRP", 0.232488, -6.10, 0.36, 8.03, 9975961452.76, 1857161424.9047709, R.drawable.xrp));
-        coins.add(new Coin("Bitcoin Cash", "BCH", 332.50, -5.25, 0.31, 25.16, 6061849292.55, 4034762667.1342015, R.drawable.bitcoincash));
-        coins.add(new Coin("Bitcoin SV", "BCHSV", 274.49, 6.09, 0.98, 71.68, 5003375789.67, 2920688747.7987976, R.drawable.bitcoinsv));
-        coins.add(new Coin("Tether", "USDT", 1.00, 0.09, -0.04, 0.29, 4051244046.05, 32969047733.32528, R.drawable.tether));
-        coins.add(new Coin("Litecoin", "LTC", 57.11, -6.42, 0.35, 12.84, 3665038765.74, 3433599488.5887113, R.drawable.lifecoin));
+        coins.add(new Coin("Bitcoin Cash", "BCH", 332.50, -5.25, 0.31, 25.16, 6061849292.55, 4034762667.1342015, R.drawable.bch));
+        coins.add(new Coin("Bitcoin SV", "BCHSV", 274.49, 6.09, 0.98, 71.68, 5003375789.67, 2920688747.7987976, R.drawable.bchsv));
+        coins.add(new Coin("Tether", "USDT", 1.00, 0.09, -0.04, 0.29, 4051244046.05, 32969047733.32528, R.drawable.usdt));
+        coins.add(new Coin("Litecoin", "LTC", 57.11, -6.42, 0.35, 12.84, 3665038765.74, 3433599488.5887113, R.drawable.ltc));
         coins.add(new Coin("EOS", "EOS", 3.58, -7.21, -0.11, 12.92, 3324669063.56, 3353780327.053705, R.drawable.eos));
-        coins.add(new Coin("Binance Coin", "BNB", 17.20, -5.04, 0.24, 12.51, 2675482775.95, 233309183.3948947, R.drawable.binancecoin));
-        coins.add(new Coin("Stellar", "XLM", 0.061529, -2.09, 1.78, 25.85, 1232939271.42, 502557303.372596, R.drawable.stellar));
+        coins.add(new Coin("Binance Coin", "BNB", 17.20, -5.04, 0.24, 12.51, 2675482775.95, 233309183.3948947, R.drawable.bnb));
+        coins.add(new Coin("Stellar", "XLM", 0.061529, -2.09, 1.78, 25.85, 1232939271.42, 502557303.372596, R.drawable.xlm));
         return coins;
     }
 

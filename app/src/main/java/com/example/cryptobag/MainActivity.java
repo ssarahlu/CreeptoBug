@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "Detail";
     private boolean mTwoPane;
 
 
