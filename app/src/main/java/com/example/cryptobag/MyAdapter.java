@@ -12,8 +12,9 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import com.example.cryptobag.Entities.Coin;
+
+import java.text.NumberFormat;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
@@ -29,23 +30,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
             Coin coin = (Coin) v.getTag();
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
-                arguments.putString(DetailFragment.ARG_ITEM_ID, coin.getName());
+                arguments.putString(DetailFragment.ARG_ITEM_ID, coin.getId());
                 DetailFragment fragment = new DetailFragment();
                 fragment.setArguments(arguments);
                 mParentActivity.getSupportFragmentManager().beginTransaction().replace(R.id.detailContainer, fragment).commit();
             } else {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, DetailActivity.class);
-                intent.putExtra(DetailFragment.ARG_ITEM_ID, coin.getName());
+                intent.putExtra(DetailFragment.ARG_ITEM_ID, coin.getId());
                 context.startActivity(intent);
             }
         }
     };
 
 
-    public MyAdapter(MainActivity parent, ArrayList<Coin> coins, boolean twoPane) {
+    public MyAdapter(MainActivity parent, List<Coin> coins, boolean twoPane) {
         mParentActivity = parent;
-        coinList = Coin.getCoins();
+        coinList = coins;
         mTwoPane = twoPane;
     }
 
@@ -74,21 +75,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
     public void onBindViewHolder(CoinViewHolder holder, int position) {
         Coin coin = coinList.get(position);
         mCoin = coinList.get(position).getName();
-        DecimalFormat formatter = new DecimalFormat("#,###.00");
         holder.name.setText(coin.getName());
-        holder.value.setText("$" + formatter.format(coin.getValue()));
-        holder.change1h.setText(coin.getChange1h() + " %");
-        holder.imageView.setImageResource(coin.getThumbNail());
+        holder.value.setText(NumberFormat.getCurrencyInstance().format(Double.valueOf(coin.getPriceUsd())));
+        holder.change1h.setText(coin.getPercentChange1h() + " %");
+//        holder.imageView.setImageResource(coin.getThumbNail());
         holder.itemView.setTag(coin);
         holder.itemView.setOnClickListener(mOnClickListener);
+
     }
 
     @Override
     public int getItemCount() {
         return coinList.size();
     }
-
-
 
 
 }

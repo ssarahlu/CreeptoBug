@@ -6,6 +6,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import com.example.cryptobag.Entities.CoinLoreResponse;
+import com.example.cryptobag.Entities.Coin;
+
 public class MainActivity extends AppCompatActivity {
     private boolean mTwoPane;
 
@@ -23,7 +30,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        RecyclerView.Adapter mAdapter = new MyAdapter(this, Coin.getCoins(), mTwoPane);
+
+        Gson gson = new Gson();
+        CoinLoreResponse response = gson.fromJson(CoinLoreResponse.json, CoinLoreResponse.class);
+        List<Coin> coins = response.getData();
+
+        RecyclerView.Adapter mAdapter = new MyAdapter(this, coins, mTwoPane);
+
         mRecyclerView.setAdapter(mAdapter);
 
     }
