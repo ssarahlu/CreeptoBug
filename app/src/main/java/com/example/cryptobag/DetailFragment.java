@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,14 @@ import android.widget.TextView;
 import com.example.cryptobag.Entities.CoinLoreResponse;
 import com.example.cryptobag.Entities.Coin;
 
-
-import com.google.gson.Gson;
-
 import java.text.NumberFormat;
 import java.util.List;
 
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class DetailFragment extends Fragment {
@@ -29,6 +31,7 @@ public class DetailFragment extends Fragment {
     private ImageView imageView;
     private Coin mCoin;
     public static final String ARG_ITEM_ID = "item_id";
+    private static final String TAG = "DetailActivity";
 
 
     public DetailFragment() {
@@ -38,22 +41,47 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            Gson gson = new Gson();
-            CoinLoreResponse response = gson.fromJson(CoinLoreResponse.json, CoinLoreResponse.class);
-            List<Coin> coins = response.getData();
-            for(Coin coin : coins) {
-                if(coin.getId().equals(getArguments().getString(ARG_ITEM_ID))) {
-                    mCoin  = coin;
-                    this.getActivity().setTitle(coin.getName());
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.coinlore.net/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            CoinService service = retrofit.create(CoinService.class);
+            Call<CoinLoreResponse> coinCall = service.getCoins();
+
+            coinCall.enqueue(new Callback<CoinLoreResponse>() {
+                @Override
+                public void onResponse(Call<CoinLoreResponse> call, Response<CoinLoreResponse> response) {
+                    if (response.isSuccessful()) {
+                        Log.d(TAG, "onResponse: do response code here ");
+                        List<Coin> coins = response.body().getData();
+                        for (Coin coin : coins) {
+                            if (coin.getId().equals(getArguments().getString(ARG_ITEM_ID))) {
+                                mCoin = coin;
+                                break;
+                            }
+                        }
+                        updateUi();
+                        DetailFragment.this.getActivity().setTitle(mCoin.getName());
+
+                    } else {
+                        Log.d(TAG, "onResponse: ERROR IS " + response.errorBody());
+                    }
                 }
-            }
+
+                @Override
+                public void onFailure(Call<CoinLoreResponse> call, Throwable t) {
+                    Log.d("Error", t.getLocalizedMessage());
+                }
+
+            });
+
 
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+    private void updateUi() {
+        View rootView = getView();
         if (mCoin != null) {
 
             NumberFormat formatter = NumberFormat.getCurrencyInstance();
@@ -86,7 +114,7 @@ public class DetailFragment extends Fragment {
 
             imageView = rootView.findViewById(R.id.myImage);
 
-//no longer have iamges so i can't set it anymore
+//no longer have iamges so i can't set it anymore :{( - sad emoji
 //            setImage(coinSelected);
 
             rootView.findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
@@ -96,7 +124,12 @@ public class DetailFragment extends Fragment {
                 }
             });
         }
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        updateUi();
         return rootView;
     }
 
@@ -105,7 +138,8 @@ public class DetailFragment extends Fragment {
         Intent implicit = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + name));
         startActivity(implicit);
     }
-//no longer have iamges so i can't set it anymore
+
+//no longer have iamges so i can't set it anymore :{( - sad emoji
 //    public void setImage(String coinSelected) {
 //        System.out.println(coinSelected);
 //        if (coinSelected != null) {

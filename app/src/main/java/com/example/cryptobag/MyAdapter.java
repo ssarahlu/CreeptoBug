@@ -22,6 +22,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
     private List<Coin> coinList;
     private boolean mTwoPane;
     public String mCoin;
+    private static final String TAG = "MyAdapter";
 
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -38,6 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
                 Context context = v.getContext();
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra(DetailFragment.ARG_ITEM_ID, coin.getId());
+                System.out.println(coin.getId());
                 context.startActivity(intent);
             }
         }
@@ -78,7 +80,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
         holder.name.setText(coin.getName());
         holder.value.setText(NumberFormat.getCurrencyInstance().format(Double.valueOf(coin.getPriceUsd())));
         holder.change1h.setText(coin.getPercentChange1h() + " %");
-//        holder.imageView.setImageResource(coin.getThumbNail());
         holder.itemView.setTag(coin);
         holder.itemView.setOnClickListener(mOnClickListener);
 
@@ -87,6 +88,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.CoinViewHolder> {
     @Override
     public int getItemCount() {
         return coinList.size();
+    }
+
+    public void setCoins(List<Coin> coins) {
+        coinList.clear();
+        coinList.addAll(coins);
     }
 
 
