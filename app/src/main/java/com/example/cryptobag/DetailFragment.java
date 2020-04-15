@@ -16,11 +16,13 @@ import android.widget.TextView;
 import com.example.cryptobag.Entities.CoinLoreResponse;
 import com.example.cryptobag.Entities.Coin;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.List;
 
+import android.os.AsyncTask;
+
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,43 +43,15 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.coinlore.net/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-
-            CoinService service = retrofit.create(CoinService.class);
-            Call<CoinLoreResponse> coinCall = service.getCoins();
-
-            coinCall.enqueue(new Callback<CoinLoreResponse>() {
-                @Override
-                public void onResponse(Call<CoinLoreResponse> call, Response<CoinLoreResponse> response) {
-                    if (response.isSuccessful()) {
-                        Log.d(TAG, "onResponse: do response code here ");
-                        List<Coin> coins = response.body().getData();
-                        for (Coin coin : coins) {
-                            if (coin.getId().equals(getArguments().getString(ARG_ITEM_ID))) {
-                                mCoin = coin;
-                                break;
-                            }
-                        }
-                        updateUi();
-                        DetailFragment.this.getActivity().setTitle(mCoin.getName());
-
-                    } else {
-                        Log.d(TAG, "onResponse: ERROR IS " + response.errorBody());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CoinLoreResponse> call, Throwable t) {
-                    Log.d("Error", t.getLocalizedMessage());
-                }
-
-            });
-
-
+            new MyCoinTask().execute();
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        updateUi();
+        return rootView;
     }
 
     private void updateUi() {
@@ -114,9 +88,6 @@ public class DetailFragment extends Fragment {
 
             imageView = rootView.findViewById(R.id.myImage);
 
-//no longer have iamges so i can't set it anymore :{( - sad emoji
-//            setImage(coinSelected);
-
             rootView.findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -126,32 +97,46 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        updateUi();
-        return rootView;
-    }
-
 
     public void googleCoin(String name) {
         Intent implicit = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/#q=" + name));
         startActivity(implicit);
     }
 
-//no longer have iamges so i can't set it anymore :{( - sad emoji
-//    public void setImage(String coinSelected) {
-//        System.out.println(coinSelected);
-//        if (coinSelected != null) {
-//            int res = getResources().getIdentifier(coinSelected.toLowerCase(), "drawable", "com.example.cryptobag");
-//            imageView.setImageResource(res);
-//
-//        } else {
-//            Intent intent2 = new Intent(getActivity(), MainActivity.class);
-//            startActivity(intent2);
-//
-//        }
-//    }
 
+    private class MyCoinTask extends AsyncTask<Void, Void, List<Coin>> {
+        @Override
+        protected List<Coin> doInBackground(Void... voids) {
+            try {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://api.coinlore.net/")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                CoinService service = retrofit.create(CoinService.class);
+                Call<CoinLoreResponse> coinCall = service.getCoins();
+                Response<CoinLoreResponse> coinResponse = coinCall.execute();
+                List<Coin> coins = coinResponse.body().getData();
+                return coins;
 
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(List<Coin> coins) {
+            for (Coin coin : coins) {
+                if (coin.getId().equals(getArguments().getString(ARG_ITEM_ID))) {
+                    mCoin = coin;
+                    updateUi();
+                    break;
+                }
+            }
+        }
+    }
 }
+
+
+
