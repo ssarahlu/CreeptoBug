@@ -3,6 +3,7 @@ package com.example.cryptobag;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private MyAdapter mAdapter;
     private static final String TAG = "MainActivity";
-    private List<Coin> coins;
+    private List<Coin> coins = new ArrayList<>();
+    private CoinDatabase cDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MyAdapter(this, new ArrayList<Coin>(), mTwoPane);
         mRecyclerView.setAdapter(mAdapter);
+        cDb = Room.databaseBuilder(getApplicationContext(), CoinDatabase.class, "coin-database").build();
+        new GetCoinDBTask().execute();
         new MyCoinTask().execute();
 
     }
@@ -56,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 Call<CoinLoreResponse> coinCall = service.getCoins();
                 Response<CoinLoreResponse> coinResponse = coinCall.execute();
                 List<Coin> coins = coinResponse.body().getData();
+
+//                cDb.coinDao().deleteAll(cDb.coinDao().getCoins().toArray(new Coin[cDb.coinDao().getCoins().size()]));
+                cDb.coinDao().delAll();
+                cDb.coinDao().insertAll(coins.toArray(new Coin[coins.size()]));
+
                 return coins;
 
             } catch (IOException e) {
@@ -72,5 +81,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class GetCoinDBTask extends AsyncTask<Void, Void, List<Coin>> {
+
+        @Override
+        protected List<Coin> doInBackground(Void... voids) {
+            return cDb.coinDao().getCoins();
+        }
+
+        @Override
+        protected void onPostExecute(List<Coin> beers) {
+            mAdapter.setCoins(coins);
+            mAdapter.notifyDataSetChanged();
+        }
+    }
 
 }

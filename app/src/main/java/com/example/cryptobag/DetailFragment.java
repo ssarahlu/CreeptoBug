@@ -5,14 +5,15 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.cryptobag.Entities.CoinLoreResponse;
 import com.example.cryptobag.Entities.Coin;
 
@@ -34,6 +35,7 @@ public class DetailFragment extends Fragment {
     private Coin mCoin;
     public static final String ARG_ITEM_ID = "item_id";
     private static final String TAG = "DetailActivity";
+    private CoinDatabase cDb;
 
 
     public DetailFragment() {
@@ -42,7 +44,9 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cDb = Room.databaseBuilder(getContext(), CoinDatabase.class, "coin-database").build();
         if (getArguments().containsKey(ARG_ITEM_ID)) {
+            new getCoinDBTask().execute();
             new MyCoinTask().execute();
         }
     }
@@ -87,6 +91,7 @@ public class DetailFragment extends Fragment {
             textViewVol.setText(formatter.format(Double.valueOf(mCoin.getVolume24())));
 
             imageView = rootView.findViewById(R.id.myImage);
+            Glide.with(this).load("https://c1.coinlore.com/img/25x25/" + mCoin.getNameid().toLowerCase() + ".png").into(imageView);
 
             rootView.findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,6 +121,9 @@ public class DetailFragment extends Fragment {
                 Call<CoinLoreResponse> coinCall = service.getCoins();
                 Response<CoinLoreResponse> coinResponse = coinCall.execute();
                 List<Coin> coins = coinResponse.body().getData();
+//                cDb.coinDao().deleteAll(cDb.coinDao().getCoins().toArray(new Coin[cDb.coinDao().getCoins().size()]));
+                cDb.coinDao().delAll();
+                cDb.coinDao().insertAll(coins.toArray(new Coin[coins.size()]));
                 return coins;
 
             } catch (IOException e) {
@@ -136,7 +144,27 @@ public class DetailFragment extends Fragment {
             }
         }
     }
+
+    private class getCoinDBTask extends AsyncTask<Void, Void, List<Coin>> {
+
+        @Override
+        protected List<Coin> doInBackground(Void... voids) {
+            return cDb.coinDao().getCoins();
+        }
+
+        @Override
+        protected void onPostExecute(List<Coin> coins) {
+            for (Coin coin : coins) {
+                if (coin.getId().equals(getArguments().getString(ARG_ITEM_ID))) {
+                    mCoin = coin;
+                    updateUi();
+                }
+            }
+        }
+    }
 }
+
+
 
 
 
