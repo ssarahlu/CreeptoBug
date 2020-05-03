@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                 Call<CoinLoreResponse> coinCall = service.getCoins();
                 Response<CoinLoreResponse> coinResponse = coinCall.execute();
                 List<Coin> coins = coinResponse.body().getData();
-
 //                cDb.coinDao().deleteAll(cDb.coinDao().getCoins().toArray(new Coin[cDb.coinDao().getCoins().size()]));
                 cDb.coinDao().delAll();
                 cDb.coinDao().insertAll(coins.toArray(new Coin[coins.size()]));
