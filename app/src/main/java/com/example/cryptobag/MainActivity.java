@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<Coin> beers) {
+        protected void onPostExecute(List<Coin> coins) {
             mAdapter.setCoins(coins);
             mAdapter.notifyDataSetChanged();
         }
