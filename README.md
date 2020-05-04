@@ -1,3 +1,2 @@
-# CreeptoBug
-baba is mean to me ~~~ crypiddycrip ~~~ beep boop beep
-
+# INFS3634 Tutorial CreeptoBug
+CryptoBag is a comprehensive cryptocurreny app that provides market cap rankings, prices, and more.
